@@ -28,7 +28,7 @@ interface IDynamicIcon extends React.SVGProps<SVGSVGElement> {
 }
 
 const DynamicIcon: FC<IDynamicIcon> = ({ icon, ...props }) => {
-  const Icon = iconMap[icon];
+  const Icon = iconMap[ icon ];
 
   if (!Icon) {
     console.warn(`Icon "${icon}" not found. Add it to DynamicIcon.tsx iconMap.`);

@@ -11,13 +11,11 @@
     "logo_height": "33",
     "logo_text": "Storeplate"
   },
-
   "announcement": {
     "enable": true,
-    "content": "<span class='text-center block'>♥️ Loving Storeplate? <a class='underline' href='https://github.com/zeon-studio/storeplate' target='_blank' rel='noopener'>Please ⭐️ on Github</a></span>",
+    "content": "<span class='text-center block'>Free shipping over $75 + 30-day returns. <a class='underline' href='/products'>Shop new arrivals</a></span>",
     "expire_days": 7
   },
-
   "settings": {
     "search": true,
     "account": true,
@@ -25,34 +23,29 @@
     "theme_switcher": true,
     "default_theme": "system"
   },
-
   "params": {
     "contact_form_action": "#",
-    "copyright": "Designed And Developed by [Zeon Studio](https://zeon.studio)"
+    "copyright": "Designed And Developed by [Central Coast Web Design](https://centralcoast-webdesign.com)"
   },
-
   "navigation_button": {
     "enable": true,
     "label": "Get Started",
-    "link": "https://github.com/zeon-studio/storeplate"
+    "link": "https://centralcoast-webdesign.com"
   },
-
   "google_tag_manager": {
     "enable": false,
     "gtm_id": "GTM-XXXXXX"
   },
-
   "metadata": {
-    "meta_author": "zeon.studio",
+    "meta_author": "Central Coast Web Design",
     "meta_image": "/images/og-image.png",
-    "meta_description": "Shopify Storefront Boilerplate"
+    "meta_description": "Shopify Astro React Storefront Template"
   },
-
   "shopify": {
-    "currencySymbol": "৳",
+    "currencySymbol": "$",
     "currencyCode": "BDT",
     "collections": {
-      "hero_slider": "hidden-homepage-carousel",
+      "hero_slider": "frontpage",
       "featured_products": "featured-products"
     }
   }
