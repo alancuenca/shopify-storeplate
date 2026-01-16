@@ -1,28 +1,28 @@
-# Storeplate - Modern Headless Shopify Storefront
+# Beardless Cub - Headless Shopify Storefront
 
-A production-ready Astro + Shopify + Tailwind CSS + TypeScript headless e-commerce template. Built for performance, SEO, and developer experience.
+A production-ready headless Shopify storefront built with Astro 5, React 19, Tailwind CSS v4, and TypeScript. Server-rendered for fresh product data on every request with optimized assets and SEO baked in.
 
 ## Features
 
-- **Shopify Storefront API** - Full GraphQL integration for products, collections, cart, and checkout
-- **Modern Stack** - Astro 5, React 19, TypeScript, Tailwind CSS 4
-- **SEO Optimized** - JSON-LD structured data, Open Graph, Twitter Cards, semantic HTML
-- **Performance First** - Static site generation, optimized images, lazy loading
-- **Cart & Checkout** - Full cart functionality with Shopify's secure checkout
-- **User Authentication** - Sign up, login with Shopify Customer API
-- **Search & Filters** - Product search, category filters, price range, sorting
-- **Dark Mode** - Automatic theme switching based on user preference
-- **Responsive** - Mobile-first design, works on all devices
+- **Shopify Storefront API** - Products, collections, cart, checkout
+- **Astro 5 SSR** - Fresh data on refresh, hybrid pages via `prerender`
+- **React Islands** - Client-only UI where needed
+- **SEO** - JSON-LD, Open Graph, Twitter Cards
+- **Performance** - Asset optimization, lazy loading, caching headers
+- **Cart & Auth** - Shopify cart + customer login/signup
+- **Search & Filters** - Vendor, price, tags, sorting
+- **Dark Mode** - Theme-aware UI
 
 ## Tech Stack
 
 | Technology | Version | Purpose |
 |------------|---------|---------|
-| Astro | 5.16+ | Static site framework |
+| Astro | 5.16+ | SSR + Islands |
 | React | 19+ | Interactive components |
 | TypeScript | 5.9+ | Type safety |
 | Tailwind CSS | 4.1+ | Styling |
 | Shopify Storefront API | Latest | E-commerce backend |
+| Netlify | - | Hosting + SSR adapter |
 
 ## Quick Start
 
@@ -32,11 +32,9 @@ A production-ready Astro + Shopify + Tailwind CSS + TypeScript headless e-commer
 - npm 10+
 - Shopify Partner account
 
-### 1. Clone & Install
+### 1. Install
 
 ```bash
-git clone <your-repo-url>
-cd shopify-storeplate
 npm install
 ```
 
@@ -70,12 +68,12 @@ Visit [http://localhost:4321](http://localhost:4321)
 ```
 src/
 ├── config/           # Site configuration (config.json, theme.json)
-├── layouts/          # Page layouts and components
-│   ├── Base.astro    # Main layout with SEO
-│   ├── Layout.astro  # Clean SEO-optimized layout
+├── layouts/          # Layouts and UI components
+│   ├── Base.astro    # Main layout + SEO
+│   ├── Layout.astro  # Alternate layout
 │   ├── components/   # Astro components
 │   ├── functional-components/  # React components
-│   └── partials/     # Header, Footer, etc.
+│   └── partials/     # Header/Footer/etc.
 ├── lib/
 │   └── shopify/      # Shopify API integration
 │       ├── queries/  # GraphQL queries
@@ -93,7 +91,6 @@ src/
 | `npm run dev` | Start development server |
 | `npm run build` | Build for production |
 | `npm run preview` | Preview production build |
-| `npm run format` | Format code with Prettier |
 | `npm run check` | Run Astro type checking |
 
 ## Deployment
@@ -115,14 +112,14 @@ Build settings are pre-configured in `netlify.toml`.
 ```json
 {
   "site": {
-    "title": "Your Store Name",
+    "title": "Beardless Cub",
     "base_url": "https://your-domain.com"
   },
   "shopify": {
     "currencySymbol": "$",
     "currencyCode": "USD",
     "collections": {
-      "hero_slider": "hidden-homepage-carousel",
+      "hero_slider": "frontpage",
       "featured_products": "featured-products"
     }
   }
@@ -139,12 +136,25 @@ Customize colors, fonts, and spacing.
 
 Create these collections in your Shopify admin:
 
-1. **hidden-homepage-carousel** - Products for hero slider
+1. **frontpage** - Products for hero slider
 2. **featured-products** - Featured products section
 
 ### Product Images
 
 Use consistent alt text for color variants - the alt text matches the color option value.
+
+## Rendering Model
+
+- SSR by default (`output: 'server'`)
+- Static pages use `export const prerender = true`
+- Product/collection data is fetched on request for freshness
+
+## UI/Styling Standards
+
+- Tailwind v4 with minimal inline styles
+- Prefer reusable utility classes and `@apply` where it improves readability
+- Keep consistent spacing and sizing across cards, grids, and media
+- Use Astro `<Image>` for local assets to improve LCP/CLS
 
 ## Security
 
@@ -153,7 +163,7 @@ This template includes:
 - Content Security Policy headers
 - XSS protection
 - Secure cookie handling
-- Environment variable protection (PUBLIC_ prefix for client-safe only)
+- Environment variable protection (`PUBLIC_` prefix for client-safe only)
 
 ## License
 
