@@ -319,6 +319,24 @@ export type ShopifyProductOperation = {
   };
 };
 
+export type ShopifyProductPriceAvailabilityOperation = {
+  data: {
+    product: {
+      availableForSale: boolean;
+      priceRange: {
+        maxVariantPrice: Money;
+        minVariantPrice: Money;
+      };
+      compareAtPriceRange: {
+        maxVariantPrice: Money;
+      };
+    } | null;
+  };
+  variables: {
+    handle: string;
+  };
+};
+
 export type ShopifyProductRecommendationsOperation = {
   data: {
     productRecommendations: ShopifyProduct[];
@@ -339,6 +357,18 @@ export type ShopifyProductsOperation = {
     query?: string;
     reverse?: boolean;
     sortKey?: string;
+    cursor?: string;
+  };
+};
+
+export type ShopifyProductHandlesOperation = {
+  data: {
+    products: {
+      pageInfo: PageInfo;
+      edges: Array<{ node: { handle: string } }>;
+    };
+  };
+  variables: {
     cursor?: string;
   };
 };

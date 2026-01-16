@@ -1,25 +1,29 @@
 ---
 import config from "@/config/config.json";
 import Base from "@/layouts/Base.astro";
-import { getListPage } from "@/lib/contentParser.astro";
-import { markdownify } from "@/lib/utils/textConverter";
 import PageHeader from "@/partials/PageHeader.astro";
 
-const contact = await getListPage("contact", "-index");
-
-if (contact.data.draft) {
-  return Astro.redirect("/404");
-}
+// Pre-render this static page
+export const prerender = true;
 
 const { contact_form_action }: { contact_form_action: string } = config.params;
-const { title, meta_title, description, image, contact_meta } = contact.data;
+
+const title = "Contact Us";
+const meta_title = "Contact Us | Storeplate";
+const description = "Get in touch with us. We'd love to hear from you!";
+
+const contactInfo = [
+  { name: "Email", contact: "support@yourstore.com" },
+  { name: "Phone", contact: "+1 (555) 123-4567" },
+  { name: "Address", contact: "123 Store Street, City, ST 12345" },
+  { name: "Hours", contact: "Mon-Fri: 9AM-6PM" },
+];
 ---
 
 <Base
   title={title}
   meta_title={meta_title}
   description={description}
-  image={image}
 >
   <PageHeader title={title} />
 
@@ -27,16 +31,14 @@ const { title, meta_title, description, image, contact_meta } = contact.data;
     <div class="container">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {
-          contact_meta &&
-            contact_meta?.map((contact) => (
-              <div class="p-10 bg-light dark:bg-darkmode-light rounded-md text-center">
-                <p
-                  set:html={markdownify(contact.name)}
-                  class="mb-6 h3 font-medium text-text-dark dark:text-darkmode-text-dark"
-                />
-                <p set:html={markdownify(contact.contact)} />
-              </div>
-            ))
+          contactInfo.map((item) => (
+            <div class="p-10 bg-light dark:bg-darkmode-light rounded-md text-center">
+              <p class="mb-6 h3 font-medium text-text-dark dark:text-darkmode-text-dark">
+                {item.name}
+              </p>
+              <p>{item.contact}</p>
+            </div>
+          ))
         }
       </div>
     </div>

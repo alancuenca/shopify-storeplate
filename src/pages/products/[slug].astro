@@ -1,5 +1,6 @@
 ---
 import FeaturedProducts from "@/components/FeaturedProducts.astro";
+import LivePriceAvailability from "@/components/LivePriceAvailability.astro";
 import config from "@/config/config.json";
 import { AddToCart } from "@/functional-components/cart/AddToCart";
 import ProductGallery from "@/functional-components/product/ProductGallery";
@@ -8,18 +9,23 @@ import Tabs from "@/functional-components/product/Tabs";
 import { VariantSelector } from "@/functional-components/product/VariantSelector";
 import SocialShare from "@/functional-components/SocialShare";
 import Base from "@/layouts/Base.astro";
-import { getListPage } from "@/lib/contentParser.astro";
-import { getProduct, getProductRecommendations } from "@/lib/shopify";
+import {
+  getProduct,
+  getProductRecommendations,
+} from "@/lib/shopify";
 
+// Server-rendered for fresh Shopify data on each request
 const { slug } = Astro.params;
 const product = await getProduct(slug as string);
 
-const paymentSection = await getListPage(
-  "paymentSection",
-  "payments-and-delivery"
-);
-
-const { payment_methods, estimated_delivery } = paymentSection.data;
+// Static payment info (customize as needed)
+const payment_methods = [
+  { name: "Visa", image_url: "/images/payment/visa.png" },
+  { name: "Mastercard", image_url: "/images/payment/mastercard.png" },
+  { name: "PayPal", image_url: "/images/payment/paypal.png" },
+  { name: "Apple Pay", image_url: "/images/payment/apple-pay.png" },
+];
+const estimated_delivery = "Estimated delivery: 3-5 business days";
 
 if (!product) {
   return Astro.redirect("/404");
@@ -57,24 +63,36 @@ const { currencySymbol } = config.shopify;
         <div class="col-10 md:col-8 lg:col-5 md:ml-7 py-6 lg:py-0">
           <h1 class="text-3xl md:h2 mb-2 md:mb-6">{title}</h1>
 
-          <div class="flex gap-2 items-center">
-            <h4 class="text-text-light dark:text-darkmode-text-light max-md:h2">
-              {currencySymbol}
-              {priceRange?.minVariantPrice.amount}{" "}
-              {priceRange?.minVariantPrice?.currencyCode}
-            </h4>
-            {
-              parseFloat(compareAtPriceRange?.maxVariantPrice.amount) > 0 ? (
-                <s class="text-text-light max-md:h3 dark:text-darkmode-text-light">
-                  {currencySymbol}{" "}
-                  {compareAtPriceRange?.maxVariantPrice?.amount}{" "}
-                  {compareAtPriceRange?.maxVariantPrice?.currencyCode}
-                </s>
-              ) : (
-                ""
-              )
-            }
-          </div>
+          <LivePriceAvailability handle={slug} server:defer>
+            <div slot="fallback" class="flex flex-wrap items-center gap-2">
+              <div class="flex gap-2 items-center">
+                <h4 class="text-text-light dark:text-darkmode-text-light max-md:h2">
+                  {currencySymbol}
+                  {priceRange?.minVariantPrice.amount}{" "}
+                  {priceRange?.minVariantPrice?.currencyCode}
+                </h4>
+                {
+                  parseFloat(compareAtPriceRange?.maxVariantPrice.amount) > 0 ? (
+                    <s class="text-text-light max-md:h3 dark:text-darkmode-text-light">
+                      {currencySymbol}{" "}
+                      {compareAtPriceRange?.maxVariantPrice?.amount}{" "}
+                      {compareAtPriceRange?.maxVariantPrice?.currencyCode}
+                    </s>
+                  ) : (
+                    ""
+                  )
+                }
+              </div>
+              <span
+                class:list={[
+                  "text-xs font-medium",
+                  product.availableForSale ? "text-emerald-600" : "text-red-600",
+                ]}
+              >
+                {product.availableForSale ? "In stock" : "Out of stock"}
+              </span>
+            </div>
+          </LivePriceAvailability>
 
           <div class="my-10 md:my-10 space-y-6 md:space-y-10">
             <div>

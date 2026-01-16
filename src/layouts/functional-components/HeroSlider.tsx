@@ -1,7 +1,4 @@
 import type { Product } from "@/lib/shopify/types";
-import React from "react";
-import "swiper/css";
-import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 

@@ -1,0 +1,46 @@
+---
+import config from "@/config/config.json";
+import { getProductPriceAvailability } from "@/lib/shopify";
+
+const { handle }: { handle: string } = Astro.props;
+const { currencySymbol } = config.shopify;
+
+const product = handle ? await getProductPriceAvailability(handle) : null;
+const price = product?.priceRange?.minVariantPrice;
+const comparePrice = product?.compareAtPriceRange?.maxVariantPrice;
+const showCompare = Boolean(comparePrice && parseFloat(comparePrice.amount) > 0);
+const availabilityLabel = product?.availableForSale ? "In stock" : "Out of stock";
+---
+
+{
+  product && price ? (
+    <div class="flex flex-wrap items-center gap-2">
+      <div class="flex gap-2 items-center">
+        <h4 class="text-text-light dark:text-darkmode-text-light max-md:h2">
+          {currencySymbol}
+          {price.amount} {price.currencyCode}
+        </h4>
+        {
+          showCompare ? (
+            <s class="text-text-light max-md:h3 dark:text-darkmode-text-light">
+              {currencySymbol}
+              {comparePrice?.amount} {comparePrice?.currencyCode}
+            </s>
+          ) : null
+        }
+      </div>
+      <span
+        class:list={[
+          "text-xs font-medium",
+          product.availableForSale ? "text-emerald-600" : "text-red-600",
+        ]}
+      >
+        {availabilityLabel}
+      </span>
+    </div>
+  ) : (
+    <div class="text-sm text-text-light dark:text-darkmode-text-light">
+      Price unavailable
+    </div>
+  )
+}

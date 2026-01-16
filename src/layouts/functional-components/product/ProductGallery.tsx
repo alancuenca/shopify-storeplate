@@ -1,14 +1,10 @@
-import React, { useEffect, useRef, useState, type JSX, type MouseEvent, type TouchEvent } from "react";
+import { useEffect, useRef, useState, type JSX, type MouseEvent, type TouchEvent } from "react";
 import { FiZoomIn } from "react-icons/fi";
 import {
   HiOutlineArrowNarrowLeft,
   HiOutlineArrowNarrowRight,
 } from "react-icons/hi";
 import type { Swiper as TSwiper } from "swiper";
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
-import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SkeletonProductThumb from "../loadings/skeleton/SkeletonProductThumb";

@@ -1,45 +1,42 @@
-import mdx from "@astrojs/mdx";
-import netlify from "@astrojs/netlify";
-import react from "@astrojs/react";
-import sitemap from "@astrojs/sitemap";
-import tailwindcss from "@tailwindcss/vite";
-import AutoImport from "astro-auto-import";
-import { defineConfig } from "astro/config";
-import sharp from "sharp";
-import config from "./src/config/config.json";
+import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
+import netlify from '@astrojs/netlify';
+import tailwindcss from '@tailwindcss/vite';
 
-// https://astro.build/config
 export default defineConfig({
-  site: config.site.base_url ? config.site.base_url : "http://examplesite.com",
-  base: config.site.base_path ? config.site.base_path : "/",
-  trailingSlash: config.site.trailing_slash ? "always" : "never",
-  image: { service: sharp() },
-  output: "server",
-  adapter: netlify({
-    edgeMiddleware: true,
-  }),
-  vite: { plugins: [tailwindcss()] },
+  site: 'https://your-site-name.netlify.app', // Update after deployment
+  output: 'server', // Astro 5: server mode for SSR, use prerender = true for static pages
+  adapter: netlify(),
+  // Prefetch links on hover for faster navigation
+  prefetch: {
+    prefetchAll: false, // Don't prefetch everything, only on hover
+    defaultStrategy: 'hover',
+  },
   integrations: [
     react(),
     sitemap(),
-    AutoImport({
-      imports: [
-        "@/shortcodes/Button",
-        "@/shortcodes/Accordion",
-        "@/shortcodes/Notice",
-        "@/shortcodes/Video",
-        "@/shortcodes/Youtube",
-        "@/shortcodes/Tabs",
-        "@/shortcodes/Tab",
-      ],
-    }),
-    mdx(),
   ],
-  markdown: {
-    shikiConfig: {
-      theme: "one-dark-pro",
-      wrap: true,
+  vite: {
+    plugins: [ tailwindcss() ],
+    // Optimize dependency bundling
+    optimizeDeps: {
+      include: [ 'swiper', 'nanostores', '@nanostores/react', 'js-cookie' ],
     },
-    extendDefaultPlugins: true,
+    ssr: {
+      // Don't externalize these packages in SSR
+      noExternal: [ 'swiper' ],
+    },
+    build: {
+      // Improve chunk splitting for better caching
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'react-vendor': [ 'react', 'react-dom' ],
+            'swiper-vendor': [ 'swiper' ],
+          },
+        },
+      },
+    },
   },
 });

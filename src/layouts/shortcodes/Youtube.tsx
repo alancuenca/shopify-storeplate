@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 const Youtube = ({
   id,
@@ -9,12 +9,22 @@ const Youtube = ({
   title: string;
   [key: string]: any;
 }) => {
-  useEffect(() => {
-    import("@justinribeiro/lite-youtube");
-  }, []);
+  const src = `https://www.youtube.com/embed/${id}`;
 
-  // @ts-ignore
-  return <lite-youtube class="rounded-lg" videoid={id} videotitle={title} {...rest} />;
+  return (
+    <div className="relative w-full aspect-video overflow-hidden rounded-lg">
+      <iframe
+        title={title}
+        src={src}
+        className="absolute inset-0 h-full w-full"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        {...rest}
+      />
+    </div>
+  );
 };
 
 export default Youtube;

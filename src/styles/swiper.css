@@ -1,0 +1,15 @@
+/* Swiper CSS - Centralized imports to avoid MIME type issues in React components */
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+@import "swiper/css/free-mode";
+@import "swiper/css/thumbs";
+
+/* Custom Swiper styles */
+.banner-pagination-bullet {
+  @apply w-2.5 h-2.5 bg-gray-300 rounded-full inline-block mx-1 cursor-pointer transition-all duration-300;
+}
+
+.banner-pagination-bullet-active {
+  @apply bg-primary w-6;
+}

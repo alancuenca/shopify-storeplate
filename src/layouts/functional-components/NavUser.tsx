@@ -2,7 +2,6 @@ import { getUserDetails } from "@/lib/shopify";
 import type { user } from "@/lib/shopify/types";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import Gravatar from "react-gravatar";
 import { BsPerson } from "react-icons/bs";
 
 export const fetchUser = async () => {
@@ -52,11 +51,8 @@ const NavUser = ({ pathname }: { pathname: string }) => {
           className="relative cursor-pointer text-left sm:text-xs flex items-center justify-center"
         >
           <div className="flex items-center gap-x-1">
-            <div className="h-6 w-6 border border-darkmode-border dark:border-border rounded-full">
-              <Gravatar
-                email={user?.email}
-                style={{ borderRadius: "50px" }}
-              />
+            <div className="h-6 w-6 border border-darkmode-border dark:border-border rounded-full flex items-center justify-center">
+              <BsPerson className="text-text-dark dark:text-darkmode-text-dark" />
             </div>
             <div className="leading-none max-md:hidden">
               <div className="flex items-center">

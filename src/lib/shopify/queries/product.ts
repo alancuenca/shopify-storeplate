@@ -9,6 +9,30 @@ export const getProductQuery = /* GraphQL */ `
   ${productFragment}
 `;
 
+export const getProductPriceAvailabilityQuery = /* GraphQL */ `
+  query getProductPriceAvailability($handle: String!) {
+    product(handle: $handle) {
+      availableForSale
+      priceRange {
+        maxVariantPrice {
+          amount
+          currencyCode
+        }
+        minVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+      compareAtPriceRange {
+        maxVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+    }
+  }
+`;
+
 export const getProductsQuery = /* GraphQL */ `
   query getProducts(
     $sortKey: ProductSortKeys
@@ -36,6 +60,22 @@ export const getProductsQuery = /* GraphQL */ `
     }
   }
   ${productFragment}
+`;
+
+export const getProductHandlesQuery = /* GraphQL */ `
+  query getProductHandles($cursor: String) {
+    products(first: 100, after: $cursor) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          handle
+        }
+      }
+    }
+  }
 `;
 
 export const getProductRecommendationsQuery = /* GraphQL */ `

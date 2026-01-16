@@ -1,9 +1,5 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { BsChevronRight } from "react-icons/bs";
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -46,8 +42,8 @@ const PaymentSlider = ({ paymentMethods }: { paymentMethods: any }) => {
         </SwiperSlide>
       ))}
 
-      <button ref={prevRef} className="hidden" />
-      <button ref={nextRef} className="p-2 border rounded-md cursor-pointer">
+      <button ref={prevRef} className="hidden" title="Previous" type="button" />
+      <button ref={nextRef} className="p-2 border rounded-md cursor-pointer" title="Next" type="button">
         <BsChevronRight />
       </button>
     </Swiper>

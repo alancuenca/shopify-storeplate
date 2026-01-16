@@ -27,7 +27,9 @@ import { getPageQuery, getPagesQuery } from "./queries/page";
 import {
   getHighestProductPriceQuery,
   getProductQuery,
+  getProductPriceAvailabilityQuery,
   getProductRecommendationsQuery,
+  getProductHandlesQuery,
   getProductsQuery,
 } from "./queries/product";
 import { getVendorsQuery } from "./queries/vendor";
@@ -54,7 +56,9 @@ import type {
   ShopifyPagesOperation,
   ShopifyProduct,
   ShopifyProductOperation,
+  ShopifyProductPriceAvailabilityOperation,
   ShopifyProductRecommendationsOperation,
+  ShopifyProductHandlesOperation,
   ShopifyProductsOperation,
   ShopifyRemoveFromCartOperation,
   ShopifyUpdateCartOperation,
@@ -74,6 +78,7 @@ type ExtractVariables<T> = T extends { variables: object }
   : never;
 
 export async function shopifyFetch<T>({
+  cache,
   headers,
   query,
   variables,
@@ -93,6 +98,7 @@ export async function shopifyFetch<T>({
 
     const result = await fetch(endpoint, {
       method: "POST",
+      cache,
       headers: {
         "Content-Type": "application/json",
         "X-Shopify-Storefront-Access-Token": key,
@@ -467,6 +473,27 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
   return reshapeProduct(res.body.data.product, false);
 }
 
+export async function getProductPriceAvailability(
+  handle: string,
+): Promise<{
+  availableForSale: boolean;
+  priceRange: {
+    maxVariantPrice: { amount: string; currencyCode: string };
+    minVariantPrice: { amount: string; currencyCode: string };
+  };
+  compareAtPriceRange: {
+    maxVariantPrice: { amount: string; currencyCode: string };
+  };
+} | null> {
+  const res = await shopifyFetch<ShopifyProductPriceAvailabilityOperation>({
+    query: getProductPriceAvailabilityQuery,
+    variables: { handle },
+    cache: "no-store",
+  });
+
+  return res.body.data.product;
+}
+
 export async function getProductRecommendations(
   productId: string,
 ): Promise<Product[]> {
@@ -577,6 +604,32 @@ export async function getProducts({
     pageInfo,
     products: reshapeProducts(removeEdgesAndNodes(res.body.data.products)),
   };
+}
+
+export async function getAllProductHandles(): Promise<string[]> {
+  const handles: string[] = [];
+  let cursor: string | undefined;
+  let hasNextPage = true;
+
+  while (hasNextPage) {
+    const res = await shopifyFetch<ShopifyProductHandlesOperation>({
+      query: getProductHandlesQuery,
+      variables: { cursor },
+      cache: "no-store",
+    });
+
+    const products = res.body.data.products;
+    handles.push(
+      ...products.edges
+        .map((edge) => edge.node.handle)
+        .filter((handle) => Boolean(handle)),
+    );
+
+    hasNextPage = products.pageInfo.hasNextPage;
+    cursor = products.pageInfo.endCursor || undefined;
+  }
+
+  return handles;
 }
 
 export async function getHighestProductPrice(): Promise<{

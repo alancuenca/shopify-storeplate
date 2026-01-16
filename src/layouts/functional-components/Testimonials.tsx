@@ -1,13 +1,10 @@
 import { markdownify } from "@/lib/utils/textConverter";
 import type { Testimonial } from "@/types";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   HiOutlineArrowNarrowLeft,
   HiOutlineArrowNarrowRight,
 } from "react-icons/hi";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 

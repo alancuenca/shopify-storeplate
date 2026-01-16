@@ -1,132 +1,45 @@
 ---
 import ImageMod from "@/components/ImageMod.astro";
-import Accordion from "@/functional-components/Accordion";
-import Testimonials from "@/functional-components/Testimonials";
 import Base from "@/layouts/Base.astro";
-import { getListPage } from "@/lib/contentParser.astro";
-import { markdownify } from "@/lib/utils/textConverter";
 import PageHeader from "@/partials/PageHeader.astro";
 import { FaBoxOpen, FaHeadset, FaRegCheckCircle } from "react-icons/fa";
 
-const about = await getListPage("about", "-index");
-if (about.data.draft) {
-  return Astro.redirect("/404");
-}
+// Pre-render this static page
+export const prerender = true;
 
-const {
-  title,
-  meta_title,
-  description,
-  image,
-  about_us,
-  faq_section_title,
-  button,
-  faq_section_subtitle,
-  faqs,
-  testimonials_section_enable,
-  testimonials_section_title,
-  testimonials,
-  staff_section_enable,
-  staff,
-} = about.data;
+const title = "About Us";
+const meta_title = "About Us | Storeplate";
+const description = "Learn more about our store, our mission, and why customers love shopping with us.";
 ---
 
 <Base
   title={title}
   meta_title={meta_title}
   description={description}
-  image={image}
 >
   <PageHeader title={title} />
 
   <section>
     <div class="container">
-      {
-        about_us?.map((section, index) => (
-          <div class={`lg:flex gap-8 mt-14 lg:mt-28`}>
-            {index % 2 === 0 ? (
-              <>
-                <ImageMod
-                  class="rounded-md mx-auto"
-                  src={section?.image!}
-                  width={536}
-                  height={449}
-                  alt={section?.title}
-                />
-                <div class="mt-10 lg:mt-0">
-                  <h2>{section?.title}</h2>
-                  <p
-                    class="mt-4 text-text-light dark:text-darkmode-text-light leading-7"
-                    set:html={markdownify(section?.content)}
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <div>
-                  <h2>{section.title}</h2>
-                  <p
-                    class="mt-4 text-text-light dark:text-darkmode-text-light leading-7"
-                    set:html={markdownify(section.content)}
-                  />
-                </div>
-                <ImageMod
-                  class="rounded-md mx-auto mt-10 lg:mt-0"
-                  src={section.image}
-                  width={536}
-                  height={449}
-                  alt={section.title}
-                />
-              </>
-            )}
-          </div>
-        ))
-      }
-    </div>
-  </section>
-
-  {
-    testimonials_section_enable && (
-      <Testimonials
-        client:load
-        title={testimonials_section_title!}
-        testimonials={testimonials!}
-      />
-    )
-  }
-
-  <section>
-    <div class="container">
-      <div class="text-center">
-        <h2>Our Staff</h2>
-
-        <div
-          class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-14"
-        >
-          {
-            staff_section_enable &&
-              staff!.map(
-                (s: { name: string; designation: string; avatar: string }) => (
-                  <div class="border border-border rounded-lg">
-                    <div class="py-6 space-y-2">
-                      <h3 class="h4">{s.name}</h3>
-                      <p class="text-text-dark dark:text-darkmode-text-light">
-                        {s.designation}
-                      </p>
-                    </div>
-                    <div class="bg-light rounded-b-xl mx-auto">
-                      <ImageMod
-                        src={s.avatar}
-                        alt={`Staff-${s.name}`}
-                        width={290}
-                        height={250}
-                        class="mx-auto w-full h-[250px] rounded-b-xl overflow-hidden"
-                      />
-                    </div>
-                  </div>
-                )
-              )
-          }
+      <div class="lg:flex gap-8 mt-14 lg:mt-28">
+        <ImageMod
+          class="rounded-md mx-auto"
+          src="/images/aboutUs.png"
+          width={536}
+          height={449}
+          alt="About our store"
+        />
+        <div class="mt-10 lg:mt-0">
+          <h2>Our Story</h2>
+          <p class="mt-4 text-text-light dark:text-darkmode-text-light leading-7">
+            Welcome to our store! We are passionate about bringing you the best products
+            at competitive prices. Our journey began with a simple mission: to make quality
+            products accessible to everyone while providing exceptional customer service.
+          </p>
+          <p class="mt-4 text-text-light dark:text-darkmode-text-light leading-7">
+            Today, we continue to grow and evolve, always keeping our customers at the heart
+            of everything we do. Thank you for being part of our story.
+          </p>
         </div>
       </div>
     </div>
@@ -145,7 +58,7 @@ const {
               <FaHeadset size={48} />
             </div>
             <h3 class="md:h4 mt-6 mb-4">24/7 Friendly Support</h3>
-            <p>Our support team always ready for you to 7 days a week</p>
+            <p>Our support team always ready for you 7 days a week</p>
           </div>
 
           <div class="col-6 md:col-5 lg:col-3">
@@ -153,7 +66,7 @@ const {
               <FaBoxOpen size={48} />
             </div>
             <h3 class="md:h4 mt-6 mb-4">7 Days Easy Return</h3>
-            <p>Product any fault within 7 days for an immediately exchange.</p>
+            <p>Product any fault within 7 days for an immediate exchange.</p>
           </div>
 
           <div class="col-6 md:col-5 lg:col-3">
@@ -162,41 +75,8 @@ const {
             </div>
             <h3 class="md:h4 mt-6 mb-4">Quality Guaranteed</h3>
             <p>
-              If your product are not perfect, return them for a full refund
+              If your products are not perfect, return them for a full refund
             </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="container">
-      <div
-        class="bg-light px-7 lg:px-32 py-20 dark:bg-darkmode-light mb-14 xl:mb-28 rounded-md"
-      >
-        <div class="row">
-          <div class="md:col-5 mx-auto space-y-5 mb-10 md:mb-0">
-            <h1 set:html={markdownify(faq_section_title!)} />
-            <p
-              set:html={markdownify(faq_section_subtitle!)}
-              class="md:text-lg"
-            />
-
-            {
-              button?.enable && (
-                <a
-                  class="btn btn-sm md:btn-lg btn-primary font-medium"
-                  href={button.link}
-                >
-                  {button.label}
-                </a>
-              )
-            }
-          </div>
-
-          <div class="md:col-7">
-            <Accordion client:load faqs={faqs} />
           </div>
         </div>
       </div>

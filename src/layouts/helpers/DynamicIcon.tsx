@@ -1,40 +1,41 @@
-import React, { type FC } from "react";
+import type { FC } from "react";
 import type { IconType } from "react-icons";
-import * as FaIcons from "react-icons/fa6";
-// import * as AiIcons from "react-icons/ai";
-// import * as BsIcons from "react-icons/bs";
-// import * as FiIcons from "react-icons/fi";
-// import * as Io5Icons from "react-icons/io5";
-// import * as RiIcons from "react-icons/ri";
-// import * as TbIcons from "react-icons/tb";
-// import * as TfiIcons from "react-icons/tfi";
+// Only import the specific icons that are actually used
+import {
+  FaFacebook,
+  FaFacebookF,
+  FaXTwitter,
+  FaLinkedin,
+  FaLinkedinIn,
+  FaGithub,
+  FaRegCopy,
+} from "react-icons/fa6";
 
-type IconMap = Record<string, IconType>;
+// Map of icon names to their components - only includes icons actually used in the app
+const iconMap: Record<string, IconType> = {
+  FaFacebook,
+  FaFacebookF,
+  FaXTwitter,
+  FaLinkedin,
+  FaLinkedinIn,
+  FaGithub,
+  FaRegCopy,
+};
 
 interface IDynamicIcon extends React.SVGProps<SVGSVGElement> {
   icon: string;
   className?: string;
 }
 
-const iconLibraries: { [key: string]: IconMap } = {
-  fa: FaIcons,
-};
-
 const DynamicIcon: FC<IDynamicIcon> = ({ icon, ...props }) => {
-  const IconLibrary = getIconLibrary(icon);
-  const Icon = IconLibrary ? IconLibrary[icon] : undefined;
+  const Icon = iconMap[icon];
 
   if (!Icon) {
-    return <span className="text-sm">Icon not found</span>;
+    console.warn(`Icon "${icon}" not found. Add it to DynamicIcon.tsx iconMap.`);
+    return null;
   }
 
   return <Icon {...props} />;
-};
-
-const getIconLibrary = (icon: string): IconMap | undefined => {
-  const libraryKey = icon.substring(0, 2).toLowerCase();
-
-  return iconLibraries[libraryKey];
 };
 
 export default DynamicIcon;

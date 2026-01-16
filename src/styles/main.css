@@ -7,6 +7,9 @@
 /* Auto-generated theme from "theme.json"*/
 @import "./generated-theme.css";
 
+/* Swiper styles - centralized to avoid MIME type issues */
+@import "./swiper.css";
+
 @import "./safe.css";
 @import "./utilities.css";
 
