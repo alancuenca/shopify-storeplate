@@ -30,3 +30,4 @@ package-lock.json
 .netlify
 .vercel
 .cursor
+.vscode
