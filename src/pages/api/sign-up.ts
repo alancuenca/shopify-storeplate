@@ -7,7 +7,7 @@ const isValidEmail = (value: string) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
 export const OPTIONS: APIRoute = async ({ request }) => {
-  const cors = getCors(request, { methods: ["POST", "OPTIONS"] });
+  const cors = getCors(request, { methods: [ "POST", "OPTIONS" ] });
   if (!cors.isOriginAllowed) {
     return new Response("Forbidden", { status: 403 });
   }
@@ -22,9 +22,9 @@ export const OPTIONS: APIRoute = async ({ request }) => {
 };
 
 export const POST: APIRoute = async ({ request }) => {
-  const cors = getCors(request, { methods: ["POST", "OPTIONS"] });
+  const cors = getCors(request, { methods: [ "POST", "OPTIONS" ] });
   if (!cors.isOriginAllowed) {
-    return jsonResponse({ errors: [{ message: "Origin not allowed." }] }, { status: 403 });
+    return jsonResponse({ errors: [ { message: "Origin not allowed." } ] }, { status: 403 });
   }
 
   const contentType = request.headers.get("content-type") || "";
@@ -33,7 +33,7 @@ export const POST: APIRoute = async ({ request }) => {
     !contentType.includes("multipart/form-data")
   ) {
     return jsonResponse(
-      { errors: [{ message: "Unsupported content type." }] },
+      { errors: [ { message: "Unsupported content type." } ] },
       {
         status: 415,
         headers: {
@@ -54,7 +54,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   if (!rate.allowed) {
     return jsonResponse(
-      { errors: [{ message: "Too many requests. Please try again later." }] },
+      { errors: [ { message: "Too many requests. Please try again later." } ] },
       {
         status: 429,
         headers: {
@@ -75,7 +75,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (!email || !password || !firstName) {
       return jsonResponse(
-        { errors: [{ message: "First name, email, and password are required." }] },
+        { errors: [ { message: "First name, email, and password are required." } ] },
         {
           status: 400,
           headers: {
@@ -89,7 +89,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (!isValidEmail(email) || password.length < 8) {
       return jsonResponse(
-        { errors: [{ message: "Invalid email or password format." }] },
+        { errors: [ { message: "Invalid email or password format." } ] },
         {
           status: 400,
           headers: {

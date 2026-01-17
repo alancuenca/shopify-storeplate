@@ -74,7 +74,7 @@ const endpoint = `${domain}${SHOPIFY_GRAPHQL_API_ENDPOINT}`;
 const key = import.meta.env.PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
 
 type ExtractVariables<T> = T extends { variables: object }
-  ? T["variables"]
+  ? T[ "variables" ]
   : never;
 
 export async function shopifyFetch<T>({
@@ -117,7 +117,7 @@ export async function shopifyFetch<T>({
     const body = await result.json();
 
     if (body.errors) {
-      throw body.errors[0];
+      throw body.errors[ 0 ];
     }
 
     return {
@@ -192,7 +192,7 @@ const reshapeImages = (images: Connection<Image>, productTitle: string) => {
   const flattened = removeEdgesAndNodes(images);
 
   return flattened.map((image) => {
-    const filename = image.url.match(/.*\/(.*)\..*/)[1];
+    const filename = image.url.match(/.*\/(.*)\..*/)[ 1 ];
     return {
       ...image,
       altText: image.altText || `${productTitle} - ${filename}`,
@@ -295,7 +295,7 @@ export async function getCart(cartId: string): Promise<Cart | undefined> {
   const res = await shopifyFetch<ShopifyCartOperation>({
     query: getCartQuery,
     variables: { cartId },
-    tags: [TAGS.cart],
+    tags: [ TAGS.cart ],
     cache: "no-store",
   });
 
@@ -312,7 +312,7 @@ export async function getCollection(
 ): Promise<Collection | undefined> {
   const res = await shopifyFetch<ShopifyCollectionOperation>({
     query: getCollectionQuery,
-    tags: [TAGS.collections],
+    tags: [ TAGS.collections ],
     variables: {
       handle,
     },
@@ -334,7 +334,7 @@ export async function getCollectionProducts({
 }): Promise<{ pageInfo: PageInfo | null; products: Product[] }> {
   const res = await shopifyFetch<ShopifyCollectionProductsOperation>({
     query: getCollectionProductsQuery,
-    tags: [TAGS.collections, TAGS.products],
+    tags: [ TAGS.collections, TAGS.products ],
     variables: {
       handle: collection,
       reverse,
@@ -428,7 +428,7 @@ export async function getUserDetails(
 export async function getCollections(): Promise<Collection[]> {
   const res = await shopifyFetch<ShopifyCollectionsOperation>({
     query: getCollectionsQuery,
-    tags: [TAGS.collections],
+    tags: [ TAGS.collections ],
   });
   const shopifyCollections = removeEdgesAndNodes(res.body?.data?.collections);
   const collections = [
@@ -443,7 +443,7 @@ export async function getCollections(): Promise<Collection[]> {
 export async function getMenu(handle: string): Promise<Menu[]> {
   const res = await shopifyFetch<ShopifyMenuOperation>({
     query: getMenuQuery,
-    tags: [TAGS.collections],
+    tags: [ TAGS.collections ],
     variables: {
       handle,
     },
@@ -480,7 +480,7 @@ export async function getPages(): Promise<Page[]> {
 export async function getProduct(handle: string): Promise<Product | undefined> {
   const res = await shopifyFetch<ShopifyProductOperation>({
     query: getProductQuery,
-    tags: [TAGS.products],
+    tags: [ TAGS.products ],
     variables: {
       handle,
     },
@@ -515,7 +515,7 @@ export async function getProductRecommendations(
 ): Promise<Product[]> {
   const res = await shopifyFetch<ShopifyProductRecommendationsOperation>({
     query: getProductRecommendationsQuery,
-    tags: [TAGS.products],
+    tags: [ TAGS.products ],
     variables: {
       productId,
     },
@@ -535,7 +535,7 @@ export async function getVendors({
 }): Promise<{ vendor: string; productCount: number }[]> {
   const res = await shopifyFetch<ShopifyProductsOperation>({
     query: getVendorsQuery,
-    tags: [TAGS.products],
+    tags: [ TAGS.products ],
     variables: {
       query,
       reverse,
@@ -581,7 +581,7 @@ export async function getTags({
 }): Promise<Product[]> {
   const res = await shopifyFetch<ShopifyProductsOperation>({
     query: getProductsQuery,
-    tags: [TAGS.products],
+    tags: [ TAGS.products ],
     variables: {
       query,
       reverse,
@@ -607,7 +607,7 @@ export async function getProducts({
 }): Promise<{ pageInfo: PageInfo; products: Product[] }> {
   const res = await shopifyFetch<ShopifyProductsOperation>({
     query: getProductsQuery,
-    tags: [TAGS.products],
+    tags: [ TAGS.products ],
     variables: {
       query,
       reverse,
@@ -662,8 +662,8 @@ export async function getHighestProductPrice(): Promise<{
       query: getHighestProductPriceQuery,
     });
 
-    const highestProduct = res?.body?.data?.products?.edges[0]?.node;
-    const highestProductPrice = highestProduct?.variants?.edges[0]?.node?.price;
+    const highestProduct = res?.body?.data?.products?.edges[ 0 ]?.node;
+    const highestProductPrice = highestProduct?.variants?.edges[ 0 ]?.node?.price;
 
     return highestProductPrice || null;
   } catch (error) {
