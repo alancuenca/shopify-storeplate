@@ -4,10 +4,23 @@ import sitemap from '@astrojs/sitemap';
 import netlify from '@astrojs/netlify';
 import tailwindcss from '@tailwindcss/vite';
 
+const siteUrl =
+  process.env.PUBLIC_SITE_URL || 'https://your-site-name.netlify.app';
+const site = new URL(siteUrl);
+
 export default defineConfig({
-  site: 'https://your-site-name.netlify.app', // Update after deployment
+  site: siteUrl, // Update after deployment
   output: 'server', // Astro 5: server mode for SSR, use prerender = true for static pages
   adapter: netlify(),
+  security: {
+    checkOrigin: true,
+    allowedDomains: [
+      {
+        hostname: site.hostname,
+        protocol: site.protocol.replace(':', ''),
+      },
+    ],
+  },
   // Prefetch links on hover for faster navigation
   prefetch: {
     prefetchAll: false, // Don't prefetch everything, only on hover

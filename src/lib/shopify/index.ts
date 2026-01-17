@@ -363,13 +363,19 @@ export async function getCollectionProducts({
   };
 }
 
-export async function createCustomer(input: CustomerInput): Promise<any> {
+export async function createCustomer(
+  input: CustomerInput,
+  buyerIp?: string,
+): Promise<any> {
   const res = await shopifyFetch<registerOperation>({
     query: createCustomerMutation,
     variables: {
       input,
     },
     cache: "no-store",
+    headers: buyerIp
+      ? { "Shopify-Storefront-Buyer-IP": buyerIp }
+      : undefined,
   });
   // console.log(res.body.data.customerCreate.customerUserErrors)
 
@@ -383,10 +389,14 @@ export async function createCustomer(input: CustomerInput): Promise<any> {
 export async function getCustomerAccessToken({
   email,
   password,
-}: Partial<CustomerInput>): Promise<any> {
+  buyerIp,
+}: Partial<CustomerInput> & { buyerIp?: string }): Promise<any> {
   const res = await shopifyFetch<any>({
     query: getCustomerAccessTokenMutation,
     variables: { input: { email, password } },
+    headers: buyerIp
+      ? { "Shopify-Storefront-Buyer-IP": buyerIp }
+      : undefined,
   });
 
   const token =
@@ -397,13 +407,19 @@ export async function getCustomerAccessToken({
   return { token, customerLoginErrors };
 }
 
-export async function getUserDetails(accessToken: string): Promise<user> {
+export async function getUserDetails(
+  accessToken: string,
+  buyerIp?: string,
+): Promise<user> {
   const response = await shopifyFetch<userOperation>({
     query: getUserDetailsQuery,
     variables: {
       input: accessToken,
     },
     cache: "no-store",
+    headers: buyerIp
+      ? { "Shopify-Storefront-Buyer-IP": buyerIp }
+      : undefined,
   });
 
   return response.body.data;
@@ -581,11 +597,13 @@ export async function getProducts({
   reverse,
   sortKey,
   cursor,
+  buyerIp,
 }: {
   query?: string;
   reverse?: boolean;
   sortKey?: string;
   cursor?: string;
+  buyerIp?: string;
 }): Promise<{ pageInfo: PageInfo; products: Product[] }> {
   const res = await shopifyFetch<ShopifyProductsOperation>({
     query: getProductsQuery,
@@ -596,6 +614,9 @@ export async function getProducts({
       sortKey,
       cursor,
     },
+    headers: buyerIp
+      ? { "Shopify-Storefront-Buyer-IP": buyerIp }
+      : undefined,
   });
 
   const pageInfo = res.body.data?.products?.pageInfo;
