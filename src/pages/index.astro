@@ -50,9 +50,9 @@ const { products: featuredProducts } = await getCollectionProducts({
         <h2 class="mb-2">Featured Products</h2>
         <p class="md:h5">Explore Today's Featured Picks!</p>
       </div>
-      <FeaturedProducts products={featuredProducts} />
+      <FeaturedProducts products={featuredProducts} client:load />
     </div>
   </section>
 
-  <CallToAction />
+  <CallToAction client:load />
 </Base>
