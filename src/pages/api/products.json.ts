@@ -13,7 +13,7 @@ const allowedSortKeys = new Set([
 ]);
 
 export const OPTIONS: APIRoute = async ({ request }) => {
-  const cors = getCors(request, { methods: ["GET", "OPTIONS"] });
+  const cors = getCors(request, { methods: [ "GET", "OPTIONS" ] });
   if (!cors.isOriginAllowed) {
     return new Response("Forbidden", { status: 403 });
   }
@@ -28,7 +28,7 @@ export const OPTIONS: APIRoute = async ({ request }) => {
 };
 
 export const GET: APIRoute = async ({ request }) => {
-  const cors = getCors(request, { methods: ["GET", "OPTIONS"] });
+  const cors = getCors(request, { methods: [ "GET", "OPTIONS" ] });
   if (!cors.isOriginAllowed) {
     return jsonResponse({ error: "Origin not allowed." }, { status: 403 });
   }

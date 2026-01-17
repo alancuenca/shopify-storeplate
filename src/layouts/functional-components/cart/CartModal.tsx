@@ -14,8 +14,8 @@ import OpenCart from "./OpenCart";
 const CartModal: React.FC = () => {
   const currentCart = useStore(cart);
   const quantity = useStore(totalQuantity);
-  const [loading, setLoading] = useState(true);
-  const [isOpen, setIsOpen] = useState(false);
+  const [ loading, setLoading ] = useState(true);
+  const [ isOpen, setIsOpen ] = useState(false);
 
   // Refresh the cart when the component mounts
   useEffect(() => {
@@ -122,7 +122,7 @@ const CartModal: React.FC = () => {
                 item.merchandise.selectedOptions.forEach(
                   ({ name, value }: any) => {
                     if (value !== DEFAULT_OPTION) {
-                      merchandiseSearchParams[name.toLowerCase()] = value;
+                      merchandiseSearchParams[ name.toLowerCase() ] = value;
                     }
                   }
                 );
