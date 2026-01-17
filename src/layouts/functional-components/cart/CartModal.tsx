@@ -70,7 +70,7 @@ const CartModal: React.FC = () => {
               </button>
             </div>
 
-            <div className="w-full h-px absolute bg-dark dark:bg-light left-0 top-16"></div>
+            <div className="w-full h-px absolute bg-dark dark:bg-light left-0 top-16 opacity-0"></div>
 
             {/* Empty Cart Message */}
             <div className="flex flex-col justify-center items-center space-y-6 my-auto">
@@ -112,7 +112,7 @@ const CartModal: React.FC = () => {
             </button>
           </div>
 
-          <div className="w-full h-px absolute bg-dark dark:bg-light left-0 top-16"></div>
+          <div className="w-full h-px absolute bg-dark dark:bg-light left-0 top-16 opacity-0"></div>
 
           {/* Cart content */}
           <div className="flex h-full flex-col justify-between overflow-hidden p-1">
